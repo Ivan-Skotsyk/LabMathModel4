@@ -1,0 +1,415 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Lab4</title>
+
+<script src="jquery.js" type="text/javascript"></script>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+
+<style>
+  .form_cont{
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 70px;
+  }
+  .rezul  {
+     width: 700px;
+      border-collapse: collapse;
+      font-size: 12px;
+
+  } 
+  #results2{
+    width: 100px;
+  }
+  .rezul th,  .rezul td, .rezul th,  .rezul td{
+     text-align: center;
+     border: 1px solid black;
+  }
+
+  label{
+    display: block;
+    margin-bottom: 10px;
+    
+  }
+  .calc_but{
+    display: block;
+  }
+</style>
+</head>
+<body>
+  
+<form>
+  
+  <div class="form_cont">
+    <h3>Оберіть тип побудови курсу</h3>
+     <label ><input type="radio" name="zakon" checked> Курсовий спосіб</label> 
+  <label ><input type="radio"  name="zakon"> Шляховий спосіб</label> 
+  <label><input type="radio" name="zakon">Маршрутний спосіб</label>
+  </div>
+  <div class="form_cont" >
+    <h3>Оберіть початкові дані</h3>
+    <label ><input type="radio" name="Start_data" checked> 1</label> 
+    <label ><input type="radio"  name="Start_data"> 2</label> 
+    <label><input type="radio" name="Start_data">3</label>
+    <label><input type="radio" name="Start_data">4</label>
+    <label><input type="radio" name="Start_data">5</label>
+  </div>
+ 
+
+
+
+  <button id="calc" class="calc_but">Calc</button>
+  <p id="result"></p>
+
+</form>
+
+
+
+<div class="con1"><div id="container5" style="max-width: 700px; height: 400px "></div></div>
+<div class="form_cont"><table class="rezul"  id="results">
+
+    <tr >
+      <th>time</th>
+      <th>ψг</th>
+      <th >γ</th>
+      <th>Хс</th>
+      <th>Zс</th>
+      <th>Gп</th>
+      
+   
+   </tr> 
+  </table  ></div>
+  <div class="form_cont"><table class="rezul"  id="results2">
+   
+       <tr >
+         <th >γ</th>
+      </tr> 
+     </table> </div> 
+
+
+
+
+<script >
+//данные условия для 5 вариантов
+var MZ = [0, 2000, 0, 0, 0];
+var MW = [0, 0, 40, 40, 40];
+var MNV = [0, 0, 0, 180, 135];
+
+var rule;
+var Start_data;
+var containers = document.getElementsByClassName("form_cont");
+
+
+      function getIndex(container) {
+      var radios = container.getElementsByTagName("input");
+      var checkedIndex = Array.prototype.map.call(radios, function(radio,index) {
+        if(radio.checked) {
+          return index;
+        }
+      });
+      return checkedIndex.join('');
+    }
+
+      
+
+
+
+   $("#calc").on('click', function(){
+
+    rule = getIndex(containers[0]);
+    Start_data = getIndex(containers[1]);
+  // console.log(rule, Start_data)
+
+ 
+var myK = 0;
+
+
+var dataResult1 = [];
+var dataResult2 = [];
+var dataResult3 = [];
+var dataResult4 = [];
+var dataResult5 = [];
+var dataResult6 = [];
+var dataResult7 = [];
+var dataResult8 = [];
+var dataResult9 = [];
+var dataResult10 = [];
+
+
+
+
+
+
+
+var G = 80000;//початкова польотна вага разом з вагою пального
+var m = G/9.73;//
+
+var p = 0.0636;
+var S = 201.45;
+var V = 236;
+var ba = 5.285;
+var Iz = 660000;
+var Iy = 875000;
+var Ix = 250000;
+var l = 37.55;
+var ab = 6.04;
+var qdv = 0.585;
+
+    
+    var C6 = V/57.3;
+    var a1 =( 0.145 * p * V * S * l*l) / (4 * Iy);
+    var a2 = (0.1719 * p * V*V * S * l) / (2 * Iy);
+    var a3 = (0.0716 * p * V*V * S * l) / (2 * Iy);
+    var a4 = (0.8595 * p * V * S) / (2 * m);
+    var a5 = (0.01719 * p * V*V * S * l) / (2 * Ix);
+    var a6 = (0.11 * p * V * S * l*l) / (4 * Ix);
+    var a7 = (0.1759 * p * V * S) / (2 * m);
+    var b1 = (0.66 * p * V * S * l*l) / (4 * Ix);
+    var b2 = (0.1146 * p * V*V * S * l) / (2 * Ix);
+    var b3 = (0.043 * p * V*V * S * l) / (2 * Ix);
+    var b4 = 9.73 / V * Math.cos(ab/57.3);
+    var b5 = 0;
+    var b6 = (0.006 * p * V * S * l*l) / (4 * Iy);
+    var b7 = Math.sin(ab/57.3);
+
+
+       console.log(a1);
+   console.log(a2);
+   console.log(a3); 
+   console.log(a4);   
+   console.log(a5); 
+   console.log(a6); 
+   console.log(a7);
+   console.log("   ")
+    console.log(b1);
+   console.log(b2);
+   console.log(b3); 
+   console.log(b4);   
+   console.log(b5); 
+   console.log(b6); 
+   console.log(b7);
+
+   
+
+var DE = 0;
+var DN = 0;
+var x = [];
+var y = [];
+// var x1 = [];
+// var y1 = [];
+var Bv = null;
+var Bw = null;
+var PSIg = null;
+var Vsh = null;
+var Wx = null;
+var Wz = null;
+var Pzt = null;
+var Yzad = null;
+var Yzadz = [];
+var KKzt = null;
+var SHK = null;
+var dSHK = null;
+
+
+
+
+for(var i = 0; i < 7; i++ ){
+  x[i] = 0;
+  y[i] = 0;
+}
+
+y[5] = -50000;
+
+y[6] = MZ[Start_data];
+var W = MW[Start_data];
+var NV = MNV[Start_data];
+
+
+
+
+ console.log("z = " + MZ[Start_data], " W = " +  MW[Start_data],"NV = " + MNV[Start_data])
+
+y[7] = 20000;
+T = 0;
+var h = 0.05;
+
+ while (y[5]<0) 
+ 
+ {
+
+
+  Bv = y[4] + Bw;
+  Bw = -57.3 * Wz / V;
+  PSIg = -y[0];
+  Vsh = V + Wx;
+  Wx = W * Math.cos( (NV - PSIg) / 57.3 );
+  Wz = W * Math.sin( (NV - PSIg) / 57.3 );
+  Pzt = 57.3 * Math.atan(y[6]/y[5]);
+   x[5] = Vsh * Math.cos( (PSIg + y[4]) / 57.2958 );
+  x[6] = Vsh * Math.sin( (PSIg + y[4]) / 57.2958 );
+  x[7] = -3 * qdv;
+
+  //First..........................................................
+  KKzt = Pzt - PSIg;
+  Yzadz[0] = 0.7 * Vsh * Math.sin(KKzt/57.3);
+  //Second.........................................................
+  SHK = 57.3* Math.atan(x[6] / x[5]);
+  dSHK = Pzt - SHK;
+  Yzadz[1] = 0.7 * Vsh * Math.sin(dSHK/57.3);
+  //Third..........................................................
+  Yzadz[2] =- 0.02*y[6] + -0.7*x[6]; 
+
+
+  if(Yzadz[rule] >= 20 ){
+      Yzad = 20;
+  }
+  else if(Yzadz[rule] < 20 && Yzadz[rule] > -20){
+      Yzad = Yzadz[rule];
+  }
+  else{
+      Yzad = -20;
+  }
+
+  DN = 2.5 * y[2];
+  DE = 2 * (y[1] - Yzad) + 1.5*y[3];
+
+
+
+
+
+  x[0] = y[2];
+  x[1] = y[3];
+  x[2] = -a1*x[0] - b6*x[1] - a2*Bv - a3*DN - b5*DE; 
+  x[3] = -b1*x[1] - a6*x[0] - b2*Bv - a5*DN - b3*DE;
+  x[4] = x[0] + b7*x[1] + b4*y[1] - a4*Bv - a7*DN;
+ 
+
+  
+
+
+  for (var i = 0; i < 8; i++) {
+  y[i] += x[i]*h;   
+  }
+
+ var time = Math.round(T*100)/100;;
+ 
+if(time % 5 ==0){
+  // console.log(time + " кут рискання: " + y[0]);
+  // console.log(time  + " Кут крену: " + y[1]);
+  //  console.log(time  + " відхилення руля Напряму" + y[2]);
+  //  console.log(time + " Kren " + y[3]);
+  // console.log(time  + " кут ковзання: " + y[4]);
+  // console.log(time  + " Бічне відхилення: " + y[5]);
+  // console.log(time  + " Фі задане: " + y[6]);
+ 
+ 
+ var tr2 = document.createElement("tr");
+results2.appendChild(tr2);
+
+var td2 = document.createElement("td");
+   td2.innerHTML = y[1].toFixed(4);
+   tr2.appendChild(td2);
+
+   var tr = document.createElement("tr");
+   
+   results.appendChild(tr);
+   
+
+
+   var td = [];
+   td[0] = document.createElement("td");
+   td[0].innerHTML = time;
+   tr.appendChild(td[0]);
+   // for (var i= 1; i < 8; i++) {
+   //  td[i] = document.createElement("td");
+   //  td[i].innerHTML = y[i-1].toFixed(7);
+   //  tr.appendChild(td[i]);
+   // }
+   td[1] = document.createElement("td");
+   td[1].innerHTML = PSIg.toFixed(4);
+   tr.appendChild(td[1]);
+
+   td[2] = document.createElement("td");
+   td[2].innerHTML = y[1].toFixed(4);
+   tr.appendChild(td[2]);
+
+  td[3] = document.createElement("td");
+   td[3].innerHTML = y[5].toFixed(4);
+   tr.appendChild(td[3]);
+
+   td[4] = document.createElement("td");
+   td[4].innerHTML = y[6].toFixed(4);
+   tr.appendChild(td[4]);
+
+   td[5] = document.createElement("td");
+   td[5].innerHTML = y[7].toFixed(4);
+   tr.appendChild(td[5]);
+ }
+
+
+
+
+  
+      
+
+ 
+   
+
+  
+   
+ dataResult5[myK] = [];
+  dataResult5[myK][1] = y[6];
+  dataResult5[myK][0] = y[5];
+   
+
+      myK++;
+
+
+T+=h;
+}
+
+
+
+
+console.log(T)
+
+
+
+var chart5;
+
+  chart5 = new Highcharts.Chart({
+    chart: {renderTo: 'container5'},
+    series: [{data: dataResult5,
+          name: "Х"
+        }],
+       title: {
+        text: 'Координатa літака від часу'
+    },
+        yAxis: {
+        title: {
+            text: 'Z'
+        }
+    },
+     xAxis: {
+        title: {
+            text: 'X'
+        },
+       
+    },
+
+  });
+  
+  return false;
+
+});
+
+
+
+</script>
+</body>
+</html>
+
+</script>
